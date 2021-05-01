@@ -1,3 +1,5 @@
+import { parseTen } from './Ten'
+
 export const IIFE = <T>(f: () => T): T => f()
 
 /**
@@ -39,42 +41,59 @@ if (window.location.href.includes('/tasks/')) {
   const menu1 = document.createElement('div')
   mainArea.appendChild(menu1)
 
-  const sampleButton = document.createElement('button')
-  sampleButton.innerText = 'samples'
-  addStyles(sampleButton, {
-    backgroundColor: '#ff9999',
-    display: 'block',
-  })
+  {
+    const tenButton = document.createElement('button')
+    tenButton.innerText = 'TEN'
+    addStyles(tenButton, {
+      backgroundColor: '#aaddff',
+      display: 'block',
+    })
+    tenButton.addEventListener('click', () => {
+      memo.value = parseTen(memo.value)
+    })
+    menu1.appendChild(tenButton)
+  }
 
-  sampleButton.addEventListener('click', () => {
-    const samples = [...document.querySelectorAll('[id^=pre-sample]')].map((x: Element) => x.innerHTML)
+  {
+    const sampleButton = document.createElement('button')
+    sampleButton.innerText = 'samples'
+    addStyles(sampleButton, {
+      backgroundColor: '#ff9999',
+      display: 'block',
+    })
 
-    memo.value = samples.join('----------acwtc.separator----------\n')
+    sampleButton.addEventListener('click', () => {
+      const samples = [...document.querySelectorAll('[id^=pre-sample]')].map((x: Element) => x.innerHTML)
 
-    sampleButton.style.backgroundColor = '#99ff99'
-    setTimeout(() => {
-      sampleButton.style.backgroundColor = '#ff9999'
-    }, 1000)
-  })
-  menu1.appendChild(sampleButton)
+      memo.value = samples.join('----------acwtc.separator----------\n')
 
-  const copyButton = document.createElement('button')
-  copyButton.innerText = 'copy'
-  addStyles(copyButton, {
-    backgroundColor: '#aaddff',
-    display: 'block',
-  })
+      sampleButton.style.backgroundColor = '#99ff99'
+      setTimeout(() => {
+        sampleButton.style.backgroundColor = '#ff9999'
+      }, 1000)
+    })
+    menu1.appendChild(sampleButton)
+  }
 
-  copyButton.addEventListener('click', () => {
-    memo.select()
-    document.execCommand('copy')
+  {
+    const copyButton = document.createElement('button')
+    copyButton.innerText = 'copy'
+    addStyles(copyButton, {
+      backgroundColor: '#aaddff',
+      display: 'block',
+    })
 
-    copyButton.style.backgroundColor = '#99ff99'
-    setTimeout(() => {
-      copyButton.style.backgroundColor = '#aaddff'
-    }, 1000)
-  })
-  menu1.appendChild(copyButton)
+    copyButton.addEventListener('click', () => {
+      memo.select()
+      document.execCommand('copy')
+
+      copyButton.style.backgroundColor = '#99ff99'
+      setTimeout(() => {
+        copyButton.style.backgroundColor = '#aaddff'
+      }, 1000)
+    })
+    menu1.appendChild(copyButton)
+  }
 }
 
 IIFE(() => {

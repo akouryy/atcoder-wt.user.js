@@ -27,6 +27,7 @@
 *.seed
 *.tgz
 *.tsbuildinfo
+/.vscode/
 ~*
 bower_components
 build/Release
