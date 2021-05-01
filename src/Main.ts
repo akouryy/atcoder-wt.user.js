@@ -48,10 +48,16 @@ if (window.location.href.includes('/tasks/')) {
       backgroundColor: '#aaddff',
       display: 'block',
     })
-    tenButton.addEventListener('click', () => {
-      memo.value = parseTen(memo.value)
-    })
+    const f = (): void => { memo.value = parseTen(memo.value) }
+    tenButton.addEventListener('click', f)
     menu1.appendChild(tenButton)
+
+    memo.addEventListener('keypress', (ev) => {
+      if (ev.altKey && ev.code === 'KeyC') {
+        ev.preventDefault()
+        f()
+      }
+    })
   }
 
   {

@@ -17,16 +17,19 @@ ITER
     }
 
 INT
-  = name:IDENT diff:INT_diff? {
+  = name:IDENT point:'.'? diff:INT_diff? {
       return {
-        type: 'INT',
+        type: point ? 'FLOAT' : 'INT',
         name,
         diff: diff ?? 0,
       }
     }
 
 STR
-  = '"' name:IDENT {
+  = "'" name:IDENT {
+      return { type: 'CHAR', name }
+    }
+  / '"' name:IDENT {
       return { type: 'STR', name }
     }
 
