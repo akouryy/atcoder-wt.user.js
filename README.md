@@ -1,0 +1,1 @@
+# atcoder-wt.user.js
