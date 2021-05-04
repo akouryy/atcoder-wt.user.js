@@ -1,4 +1,5 @@
 import { parseTen } from './Ten'
+import { handleSubmissionPage } from './pages/submission'
 
 export const IIFE = <T>(f: () => T): T => f()
 
@@ -109,6 +110,8 @@ if (window.location.href.includes('/tasks/')) {
     menu1.appendChild(copyButton)
   })
 }
+
+handleSubmissionPage()
 
 IIFE(() => {
   const sel = document.querySelector<HTMLInputElement>("[name='data.LanguageId']")
