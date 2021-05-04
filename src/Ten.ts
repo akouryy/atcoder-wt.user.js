@@ -22,7 +22,7 @@ type CPPStmt =
 const TenParser = Peg.generate(syntax)
 
 function counter(depth: number): string {
-  return `TeN${depth}`
+  return `i${depth}`
 }
 
 function typeStr(base: string, dim: number): string {
@@ -85,12 +85,14 @@ function toCPP(part0: Part): string {
       case 'ITER': {
         const currentResizeReq = Array<string>()
         const currentCode = Array<CPPStmt>()
+        const isRaw = part.count[0] === '['
+        const count = isRaw ? part.count.slice(1, -1) : part.count
         toCPPRec(
-          part.body, [...reps, part.count], [...resizeRequests, currentResizeReq],
+          part.body, [...reps, count], [...resizeRequests, currentResizeReq],
           [...codes, currentCode],
         )
         const d = reps.length
-        const countIndexed = part.count + indices(dims.get(part.count) ?? 0)
+        const countIndexed = isRaw ? count : count + indices(dims.get(count) ?? 0)
         for (const req of currentResizeReq) {
           last(codes).push({ type: 'RESIZE', term: `${req}${indices(d)}`, size: countIndexed })
         }
@@ -133,9 +135,14 @@ function cppStmtToString(stmts0: readonly CPPStmt[]): string {
         break
       }
       case 'INPUT': {
-        const next = stmts[i + 1]
+        let j = i + 1
+        while (stmts[j]?.type === 'ADD') { ++j }
+
+        const next = stmts[j]
         if (next?.type === 'INPUT') {
-          rec(iSplice(stmts, i, 2, { ...stmt, terms: [...stmt.terms, ...next.terms] }), i)
+          rec(iSplice(
+            iSplice(stmts, j, 1), i, 1, { ...stmt, terms: [...stmt.terms, ...next.terms] },
+          ), i)
           return
         }
         add(`cin>>${stmt.terms.join('>>')};`)
@@ -173,7 +180,7 @@ function cppStmtToString(stmts0: readonly CPPStmt[]): string {
 export function parseTen(code: string): string {
   try {
     const p = TenParser.parse(code) as Part
-    return `/* wt.ten: ${code.trim()} */\n${toCPP(p)}`
+    return `/* wt.ten\n    ${code.trim()}\n  */\n${toCPP(p)}`
   } catch (e) {
     if (e instanceof Error) { // if (e instanceof Peg.SyntaxError) {
       // eslint-disable-next-line no-console

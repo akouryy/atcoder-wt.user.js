@@ -15,81 +15,35 @@ const addStyles = (f: HTMLElement, obj: Partial<CSSStyleDeclaration>): void => {
 }
 
 if (window.location.href.includes('/tasks/')) {
-  const mainArea = document.createElement('div')
-  mainArea.classList.add('akouryy-main_area')
-  addStyles(mainArea, {
-    bottom: '0em',
-    display: 'flex',
-    left: '10vh',
-    opacity: '0.9',
-    position: 'fixed',
-    right: '11vh',
-    zIndex: '10000',
-  })
-  document.body.appendChild(mainArea)
-
-  const memo = document.createElement('textarea')
-  // memo.cols = 120
-  memo.rows = 5
-  addStyles(memo, {
-    backgroundColor: '#fffcf6',
-    flexGrow: '1',
-    fontFamily: 'Menlo,Monaco,Consolas,"Courier New",monospace',
-  })
-  mainArea.appendChild(memo)
-
-  const menu1 = document.createElement('div')
-  mainArea.appendChild(menu1)
-
-  {
-    const tenButton = document.createElement('button')
-    tenButton.innerText = 'TEN'
-    addStyles(tenButton, {
-      backgroundColor: '#aaddff',
-      display: 'block',
+  IIFE(() => {
+    const mainArea = document.createElement('div')
+    mainArea.classList.add('akouryy-main_area')
+    addStyles(mainArea, {
+      bottom: '0em',
+      display: 'flex',
+      left: '10vh',
+      opacity: '0.9',
+      position: 'fixed',
+      right: '11vh',
+      zIndex: '10000',
     })
-    const f = (): void => { memo.value = parseTen(memo.value) }
-    tenButton.addEventListener('click', f)
-    menu1.appendChild(tenButton)
+    document.body.appendChild(mainArea)
 
-    memo.addEventListener('keypress', (ev) => {
-      if (ev.altKey && ev.code === 'KeyC') {
-        ev.preventDefault()
-        f()
-      }
+    const memo = document.createElement('textarea')
+    // memo.cols = 120
+    memo.rows = 5
+    addStyles(memo, {
+      backgroundColor: '#fffcf6',
+      flexGrow: '1',
+      fontFamily: 'Menlo,Monaco,Consolas,"Courier New",monospace',
     })
-  }
+    mainArea.appendChild(memo)
 
-  {
-    const sampleButton = document.createElement('button')
-    sampleButton.innerText = 'samples'
-    addStyles(sampleButton, {
-      backgroundColor: '#ff9999',
-      display: 'block',
-    })
+    const menu1 = document.createElement('div')
+    mainArea.appendChild(menu1)
 
-    sampleButton.addEventListener('click', () => {
-      const samples = [...document.querySelectorAll('[id^=pre-sample]')].map((x: Element) => x.innerHTML)
-
-      memo.value = samples.join('----------acwtc.separator----------\n')
-
-      sampleButton.style.backgroundColor = '#99ff99'
-      setTimeout(() => {
-        sampleButton.style.backgroundColor = '#ff9999'
-      }, 1000)
-    })
-    menu1.appendChild(sampleButton)
-  }
-
-  {
     const copyButton = document.createElement('button')
-    copyButton.innerText = 'copy'
-    addStyles(copyButton, {
-      backgroundColor: '#aaddff',
-      display: 'block',
-    })
-
-    copyButton.addEventListener('click', () => {
+    function copy(): void {
       memo.select()
       document.execCommand('copy')
 
@@ -97,9 +51,63 @@ if (window.location.href.includes('/tasks/')) {
       setTimeout(() => {
         copyButton.style.backgroundColor = '#aaddff'
       }, 1000)
+    }
+
+    {
+      const tenButton = document.createElement('button')
+      tenButton.innerText = 'TEN'
+      addStyles(tenButton, {
+        backgroundColor: '#aaddff',
+        display: 'block',
+      })
+      const f = (): void => {
+        memo.value = parseTen(memo.value)
+        tenButton.style.backgroundColor = '#99ff99'
+        setTimeout(() => {
+          tenButton.style.backgroundColor = '#aaddff'
+        }, 1000)
+      }
+      tenButton.addEventListener('click', f)
+      menu1.appendChild(tenButton)
+
+      memo.addEventListener('keypress', (ev) => {
+        if (ev.altKey && ev.code === 'KeyC') {
+          ev.preventDefault()
+          f()
+          if (!ev.shiftKey) { copy() }
+        }
+      })
+    }
+
+    {
+      const sampleButton = document.createElement('button')
+      sampleButton.innerText = 'samples'
+      addStyles(sampleButton, {
+        backgroundColor: '#ff9999',
+        display: 'block',
+      })
+
+      sampleButton.addEventListener('click', () => {
+        const samples = [...document.querySelectorAll('[id^=pre-sample]')].map((x: Element) => x.innerHTML)
+
+        memo.value = samples.join('----------acwtc.separator----------\n')
+
+        sampleButton.style.backgroundColor = '#99ff99'
+        setTimeout(() => {
+          sampleButton.style.backgroundColor = '#ff9999'
+        }, 1000)
+      })
+      menu1.appendChild(sampleButton)
+    }
+
+    copyButton.innerText = 'copy'
+    addStyles(copyButton, {
+      backgroundColor: '#aaddff',
+      display: 'block',
     })
+    copyButton.addEventListener('click', copy)
     menu1.appendChild(copyButton)
-  }
+  })
 }
 
 IIFE(() => {

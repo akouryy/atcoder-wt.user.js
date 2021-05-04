@@ -1,3 +1,9 @@
+PROGRAM
+  = SEQ
+  / '/* wt.ten: ' seq:SEQ '*/\n' .+ {
+      return seq
+    }
+
 SEQ
   = _ head:TERM tail:(___ TERM)* _ {
       return { type: 'SEQ', parts: [head, ...tail.map(t => t[1])] }
@@ -12,7 +18,7 @@ TERM
     }
 
 ITER
-  = count:IDENT body:TERM {
+  = count:(IDENT / RAW) body:TERM {
       return { type: 'ITER', count, body }
     }
 
@@ -46,6 +52,11 @@ IDENT
 NATURAL_LIT
   = [0-9]+ {
       return parseInt(text(), 10)
+    }
+
+RAW
+  = '[' ([^\[\]]+ / RAW)* ']' {
+      return text()
     }
 
 _   = [ \t\r\n]*
