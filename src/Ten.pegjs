@@ -1,11 +1,11 @@
 PROGRAM
   = SEQ
-  / '/* wt.ten: ' seq:SEQ '*/\n' .+ {
+  / '/* wt.ten:' ___ seq:SEQ ___ '*/' .+ {
       return seq
     }
 
 SEQ
-  = _ head:TERM tail:(___ TERM)* _ {
+  = _ head:TERM tail:(_ TERM)* _ {
       return { type: 'SEQ', parts: [head, ...tail.map(t => t[1])] }
     }
 
@@ -13,12 +13,12 @@ TERM
   = ITER
   / INT
   / STR
-  / '(' _ seq:SEQ _ ')' {
-      return seq
-    }
 
 ITER
-  = count:(IDENT / RAW) body:TERM {
+  = count:(IDENT / RAW) _ '{' _ body:SEQ _ '}' {
+      return { type: 'ITER', count, body }
+    }
+  / count:(IDENT / RAW) _ '@' _ body:TERM {
       return { type: 'ITER', count, body }
     }
 

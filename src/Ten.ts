@@ -180,7 +180,7 @@ function cppStmtToString(stmts0: readonly CPPStmt[]): string {
 export function parseTen(code: string): string {
   try {
     const p = TenParser.parse(code) as Part
-    return `/* wt.ten\n    ${code.trim()}\n  */\n${toCPP(p)}`
+    return `/* wt.ten: ${code.trim()} */\n${toCPP(p)}`
   } catch (e) {
     if (e instanceof Error) { // if (e instanceof Peg.SyntaxError) {
       // eslint-disable-next-line no-console
