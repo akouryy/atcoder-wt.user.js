@@ -68,6 +68,7 @@ if (window.location.href.includes('/tasks/')) {
         setTimeout(() => {
           tenButton.style.backgroundColor = '#aaddff'
         }, 1000)
+        copy()
       }
       tenButton.addEventListener('click', f)
       menu1.appendChild(tenButton)
@@ -76,7 +77,6 @@ if (window.location.href.includes('/tasks/')) {
         if (ev.altKey && ev.code === 'KeyC') {
           ev.preventDefault()
           f()
-          if (!ev.shiftKey) { copy() }
         }
       })
     }
@@ -98,6 +98,7 @@ if (window.location.href.includes('/tasks/')) {
         setTimeout(() => {
           sampleButton.style.backgroundColor = '#ff9999'
         }, 1000)
+        copy()
       })
       menu1.appendChild(sampleButton)
     }
