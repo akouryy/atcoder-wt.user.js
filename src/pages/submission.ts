@@ -1,4 +1,4 @@
-import { iSplice } from '../utli'
+import { iSplice } from '../util'
 
 export function handleSubmissionPage(): void {
   if (/\/submissions\/\d+($|\?)/.test(window.location.href)) {

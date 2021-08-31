@@ -1,6 +1,6 @@
 import Peg from 'pegjs'
 import syntax from './Ten.pegjs'
-import { iSplice, last, times } from './utli'
+import { iSplice, last, times } from './util'
 
 const MAX_LEN = 110
 
