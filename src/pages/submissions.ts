@@ -50,13 +50,14 @@ export function handleSubmissionsPage(): void {
 
   if (urlMatch) {
     const options = document.querySelectorAll<HTMLOptionElement>('#select-task > option[value]')
-    const dest = document.querySelector('h2, span.h2')
+    const dest = document.querySelector('h2, span.h2, h3')
 
     if (dest) {
       const shortestContainer = document.createElement('span')
       shortestContainer.style.fontWeight = 'normal'
       shortestContainer.style.fontSize = '1.3rem'
       dest.appendChild(shortestContainer)
+      shortestContainer.textContent = '最短: '
       const shortestLinks = document.createElement('span')
       shortestContainer.appendChild(shortestLinks)
 
