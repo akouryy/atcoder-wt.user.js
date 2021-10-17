@@ -1,6 +1,6 @@
-import { times, until } from '../util'
+import { times, until } from './util'
 
-function addShortestLinks(
+function addLinksToContainer(
   urlMatch: RegExpMatchArray, shortestLinks: HTMLSpanElement,
   tasksBase: NodeListOf<HTMLOptionElement> | number[],
 ): void {
@@ -45,7 +45,7 @@ function addShortestLinks(
   })
 }
 
-export function handleSubmissionsPage(): void {
+export function addShortestLinks(): void {
   const urlMatch = /\/contests\/(?!archive\b)([\w-]+)(?=\/|$)/.exec(window.location.href)
 
   if (urlMatch) {
@@ -62,15 +62,15 @@ export function handleSubmissionsPage(): void {
       shortestContainer.appendChild(shortestLinks)
 
       if (options.length > 0) {
-        addShortestLinks(urlMatch, shortestLinks, options)
+        addLinksToContainer(urlMatch, shortestLinks, options)
       } else {
-        addShortestLinks(urlMatch, shortestLinks, times(8))
+        addLinksToContainer(urlMatch, shortestLinks, times(8))
         let addCount = 1
 
         const addButton = document.createElement('button')
         addButton.innerText = '+'
         addButton.addEventListener('click', () => {
-          addShortestLinks(urlMatch, shortestLinks, until(addCount * 8, (addCount + 1) * 8))
+          addLinksToContainer(urlMatch, shortestLinks, until(addCount * 8, (addCount + 1) * 8))
           addCount += 1
         })
         shortestContainer.appendChild(addButton)

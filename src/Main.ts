@@ -1,6 +1,6 @@
 import { parseTen } from './Ten'
 import { handleSubmissionPage } from './pages/submission'
-import { handleSubmissionsPage } from './pages/submissions'
+import { addShortestLinks } from './shortest'
 
 export const IIFE = <T>(f: () => T): T => f()
 
@@ -114,7 +114,7 @@ if (window.location.href.includes('/tasks/')) {
 }
 
 handleSubmissionPage()
-handleSubmissionsPage()
+addShortestLinks()
 
 IIFE(() => {
   const sel = document.querySelector<HTMLInputElement>("[name='data.LanguageId']")
